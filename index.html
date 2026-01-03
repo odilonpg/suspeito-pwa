@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Suspeito</title>
+
+<!-- Manifest e PWA para iPhone -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Suspeito">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin-top: 25px;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.marcado {
+  background-color: #ccc;
+}
+
+.sobrou {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Suspeito</h1>
+<button onclick="resetar()">Limpar jogo</button>
+
+<h2>Lugares</h2>
+<div class="grupo">
+  <button onclick="marcar(this)">Escritório</button>
+  <button onclick="marcar(this)">Hall central</button>
+  <button onclick="marcar(this)">Biblioteca</button>
+  <button onclick="marcar(this)">Sala de jantar</button>
+  <button onclick="marcar(this)">Cozinha</button>
+  <button onclick="marcar(this)">Banheiro</button>
+  <button onclick="marcar(this)">Suíte</button>
+  <button onclick="marcar(this)">Quarto</button>
+  <button onclick="marcar(this)">Escadaria</button>
+</div>
+
+<h2>Pessoas</h2>
+<div class="grupo">
+  <button onclick="marcar(this)">Motorista</button>
+  <button onclick="marcar(this)">Empregada</button>
+  <button onclick="marcar(this)">Mordomo</button>
+  <button onclick="marcar(this)">Cozinheiro</button>
+  <button onclick="marcar(this)">Esposa</button>
+  <button onclick="marcar(this)">Jardineiro</button>
+  <button onclick="marcar(this)">Vizinho</button>
+</div>
+
+<h2>Armas</h2>
+<div class="grupo">
+  <button onclick="marcar(this)">Revólver</button>
+  <button onclick="marcar(this)">Tesoura de poda</button>
+  <button onclick="marcar(this)">Veneno</button>
+  <button onclick="marcar(this)">Chave de boca</button>
+  <button onclick="marcar(this)">Abajur</button>
+  <button onclick="marcar(this)">Martelo</button>
+  <button onclick="marcar(this)">Faca</button>
+</div>
+
+<script>
+function marcar(botao) {
+  if (botao.classList.contains("sobrou")) return;
+
+  if (botao.classList.contains("marcado")) {
+    botao.classList.remove("marcado");
+  } else {
+    botao.classList.add("marcado");
+  }
+
+  let grupo = botao.parentElement;
+  let botoes = grupo.querySelectorAll("button");
+  let naoMarcados = [];
+
+  botoes.forEach(b => {
+    b.classList.remove("sobrou");
+    if (!b.classList.contains("marcado")) naoMarcados.push(b);
+  });
+
+  if (naoMarcados.length === 1) naoMarcados[0].classList.add("sobrou");
+}
+
+function resetar() {
+  document.querySelectorAll("button").forEach(b => {
+    b.classList.remove("marcado");
+    b.classList.remove("sobrou");
+  });
+}
+
+// Registrar Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log('Service Worker registrado!'));
+}
+</script>
+
+</body>
+</html>
